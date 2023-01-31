@@ -1,10 +1,9 @@
 cmake_minimum_required(VERSION 3.18...3.22)
-project(mapf-refine)
+project(ir-mapf-pybind11)
 
 add_subdirectory(./mapf)
 add_subdirectory(./third_party/googletest)
 
-# add_subdirectory(./third_party/pybind11)
 add_executable(app app.cpp)
 
 # target_compile_features(app PUBLIC cxx_std_17)
@@ -51,6 +50,6 @@ add_test(test_ir ./tests/test_ir.cpp)
 add_executable(test ${TEST_ALL_SRC})
 target_link_libraries(test lib-mapf gtest)
 
-find_package(Python 3.8 COMPONENTS Interpreter Development REQUIRED)
+find_package(Python 3.10 COMPONENTS Interpreter Development REQUIRED)
 add_subdirectory(./third_party/pybind11)
 pybind11_add_module(mapf_py app.cpp)

@@ -1,4 +1,3 @@
-#include <Python.h>
 #include <pybind11/pybind11.h>
 #include <cbs.hpp>
 #include <default_params.hpp>
