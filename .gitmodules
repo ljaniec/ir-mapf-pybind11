@@ -1,0 +1,9 @@
+[submodule "third_party/googletest"]
+	path = third_party/googletest
+	url = https://github.com/google/googletest
+[submodule "third_party/grid-pathfinding"]
+	path = third_party/grid-pathfinding
+	url = https://github.com/Kei18/grid-pathfinding
+[submodule "third_party/pybind11"]
+	path = third_party/pybind11
+	url = https://github.com/Kei18/grid-pathfinding
