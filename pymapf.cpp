@@ -1,47 +1,40 @@
-#include <cbs.hpp>
-#include <default_params.hpp>
-#include <ecbs.hpp>
-#include <hca.hpp>
-#include <icbs.hpp>
+#include <pybind11/pybind11.h>
+#include "./mapf/include/cbs.hpp"
+#include "./mapf/include/default_params.hpp"
+#include "./mapf/include/ecbs.hpp"
+#include "./mapf/include/hca.hpp"
+#include "./mapf/include/icbs.hpp"
 #include <iostream>
-#include <ir.hpp>
-#include <pibt.hpp>
-#include <pibt_complete.hpp>
-#include <problem.hpp>
-#include <push_and_swap.hpp>
+#include "./mapf/include/ir.hpp"
+#include "./mapf/include/pibt.hpp"
+#include "./mapf/include/pibt_complete.hpp"
+#include "./mapf/include/problem.hpp"
+#include "./mapf/include/push_and_swap.hpp"
 #include <random>
-#include <revisit_pp.hpp>
+#include "./mapf/include/revisit_pp.hpp"
 #include <vector>
-#include <whca.hpp>
-#include <winpibt.hpp>
+#include "./mapf/include/whca.hpp"
+#include "./mapf/include/winpibt.hpp"
 
 std::unique_ptr<Solver> getSolver(const std::string solver_name, Problem *P);
 
-int main()
+void process_mapf_problem_instance(std::string instance_file, std::string solver_name,
+                                   std::string output_file,
+                                   bool random_starts_goals = false)
 {
-  std::string instance_file = "mapf_input.txt";
-  std::string output_file = "result.txt";
-  std::string solver_name = "PIBT";
-
-  // set problem
   Problem P = Problem(instance_file);
-
-  // solve
   auto solver = getSolver(solver_name, &P);
   solver->solve();
 
   if (solver->succeed() && !solver->getSolution().validate(&P))
   {
     std::cout << "error@app: invalid results" << std::endl;
-    return 0;
+    return;
   }
 
-  // output result
   solver->printResult();
   solver->makeLog(output_file);
   std::cout << "save result as " << output_file << std::endl;
-
-  return 0;
 }
 
 std::unique_ptr<Solver> getSolver(const std::string solver_name, Problem *P)
@@ -123,4 +116,10 @@ std::unique_ptr<Solver> getSolver(const std::string solver_name, Problem *P)
   }
   solver->setVerbose(true);
   return solver;
+}
+
+PYBIND11_MODULE(pymapf, pymapf_handle)
+{
+  pymapf_handle.doc() = "MAPF - Multi-Agent Path Finding module with Python bindings";
+  pymapf_handle.def("process_mapf_problem_instance", &process_mapf_problem_instance);
 }
