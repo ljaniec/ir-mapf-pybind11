@@ -1,6 +1,7 @@
-cmake_minimum_required(VERSION 3.18...3.22)
+cmake_minimum_required(VERSION 3.16...3.22)
 project(ir-mapf-pybind11)
-
+SET(GCC_COVERAGE_COMPILE_FLAGS "-fPIC")
+add_definitions(${GCC_COVERAGE_COMPILE_FLAGS})
 add_subdirectory(./mapf)
 add_subdirectory(./third_party/googletest)
 
@@ -51,7 +52,6 @@ add_custom_target(clang-format
 add_subdirectory(./third_party/pybind11)
 add_library(pymapf MODULE pymapf.cpp)
 target_include_directories(pymapf PUBLIC ./mapf/)
-target_compile_options(pymapf PRIVATE -fPIC)
 target_link_libraries(pymapf PRIVATE pybind11::module ${MY_LIBRARIES} lib-mapf)
 pybind11_extension(pymapf)
 
